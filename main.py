@@ -107,6 +107,37 @@ class DLSUNodes:
                 return True
         return False
 
+    def add_node(self, code: str, name: str, coord: tuple, neighbors: list[tuple[str, int]]) -> bool:
+        if self.isExistingNode(code):
+            return False
+        # 1) register the node
+        self.node_list.append(code)
+        self.node_names[code] = name
+        self.dlsu_eateries_coord[code] = coord
+        self.dlsu_eateries[code] = []
+
+        # 2) bidirectional edges
+        for nb, cost in neighbors:
+            if not self.isExistingNode(nb):
+                continue            
+            self.dlsu_eateries[code].append((nb, cost))
+            self.dlsu_eateries.setdefault(nb, []).append((code, cost))
+
+            return True
+
+    def close_node(self, code: str) -> bool:
+        if self.isExistingNode(code) and code not in self.closed_nodes:
+            self.closed_nodes[code] = True
+            return True
+        return False
+
+    def open_node(self, code: str) -> bool:
+        if code in self.closed_nodes:
+            self.closed_nodes.pop(code)
+            return True
+        return False
+
+        
 
 # =========================================================
 #   ALGORITHMS
