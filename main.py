@@ -242,29 +242,34 @@ def main():
     display.welcomeDisplay()
     print("Welcome to ___! Kindly pick any of the following below:")
     while True:
-        print("[1] Where to? (BASTA GANYAN IDK HOW TO WORD IT)")
+        print("📍 Main Menu")
+        print("[1] Route Finder")
         print("[2] Settings")
         print("[3] Exit")
         
         choice = input("Enter your choice [1-3]: ").strip()
         
         if choice == '1':
-            print("\n\nHere are the selection of DLSU eateries! Choose their corresponding letters: ")
+            print("\n\n🍴 Available DLSU Eateries: Choose their corresponding letters: ")
             display.eateryChoices()
             
             origin = " "
             while not nodes.isExistingNode(origin) or nodes.isClosed(origin):
                 origin = input("[ORIGIN] Where are you right now? ").strip()
                 if not nodes.isExistingNode(origin):
-                    print("This character does not exist! Please try again.\n")
+                    print("   ❌ That location does not exist! Please try again.\n")
+                elif nodes.isClosed(origin):
+                    print("   ❌ That location is currently CLOSED. Please pick another.\n")
 
             destination = " "
             while not nodes.isExistingNode(destination) or nodes.isClosed(destination):
                 destination = input("[DEST] Where do you want to go? ").strip()
                 if not nodes.isExistingNode(destination):
-                    print("This character does not exist! Please try again.\n")
+                    print("   ❌ That destination does not exist! Please try again.\n")
+                elif nodes.isClosed(destination):
+                    print("   ❌ That destination is currently CLOSED. Please pick another.\n")
 
-            print("\nChoose a type of algorithm:")
+            print("\n🔍 Choose a type of search algorithm:")
             invalid = True
             while invalid:
                 print("[1] Blind Search")
@@ -283,8 +288,74 @@ def main():
                 print(" ")
                 
         elif choice == '2':
-            # Settings
-            pass
+            while True:
+                print("\n⚙️ Settings Menu")
+                print("[1] Add New Establishment")
+                print("[2] Close an Establishment")
+                print("[3] Reopen an Establishment")
+                print("[4] Back to Main Menu")
+
+                s_choice = input("Enter your choice [1-4]: ").strip()
+
+                # add nodes
+                if s_choice == '1':
+                    code = input(" • New node code (e.g., 'V'): ").strip()
+                    if nodes.isExistingNode(code):
+                        print("   ❌ That code already exists.")
+                        continue
+
+                    name = input(" • Restaurant name: ").strip()
+                    try:
+                        x = int(input(" • X coordinate: "))
+                        y = int(input(" • Y coordinate: "))
+                    except ValueError:
+                        print("   ❌ Coordinates must be integers.")
+                        continue
+
+                    # gather neighbors
+                    neighbors = []
+                    print(" • Add neighbors (leave blank to finish):")
+                    while True:
+                        nb = input("   ‣ Neighbor code: ").strip()
+                        if nb == '':
+                            break
+                        if not nodes.isExistingNode(nb):
+                            print("     ⚠ Unknown node – Please try again.")
+                            continue
+                        try:
+                            cost = int(input(f"     Cost {code} ↔ {nb}: "))
+                        except ValueError:
+                            print("     ⚠ Cost must be an integer.")
+                            continue
+                        neighbors.append((nb, cost))
+
+                    if nodes.add_node(code, name, (x, y), neighbors):
+                        print(f"   ✅ Added {name} [{code}] with {len(neighbors)} neighbor(s).")
+                    else:
+                        print("   ❌ Failed to add node (duplicate code).")
+
+                # close node
+                elif s_choice == '2':
+                    target = input(" • Node code to close: ").strip()
+                    if nodes.close_node(target):
+                        print(f"   ✅ {target} is now marked as CLOSED.")
+                    else:
+                        print("   ❌ Invalid code or already closed.")
+
+                # open node
+                elif s_choice == '3':
+                    target = input(" • Node code to reopen: ").strip()
+                    if nodes.open_node(target):
+                        print(f"   ✅ {target} is now OPEN.")
+                    else:
+                        print("   ❌ Invalid code or already open.")
+
+                elif s_choice == '4':
+                    print("↩ Returning to main menu…\n")
+                    break
+                else:
+                    print("   ❌ Invalid option – Please try again.")
+
         elif choice == '3':
             break
         else:
