@@ -284,7 +284,7 @@ def main():
                     # Heuristic Search Here
                     invalid = False
                 else:
-                    print("Invalid option. Please try again.")
+                    print("   ❌ Invalid option. Please try again.")
                 print(" ")
                 
         elif choice == '2':
@@ -314,7 +314,7 @@ def main():
 
                     # gather neighbors
                     neighbors = []
-                    print(" • Add neighbors (leave blank to finish):")
+                    print(" • Add neighbors:")
                     while True:
                         nb = input("   ‣ Neighbor code: ").strip()
                         if nb == '':
@@ -332,7 +332,7 @@ def main():
                     if nodes.add_node(code, name, (x, y), neighbors):
                         print(f"   ✅ Added {name} [{code}] with {len(neighbors)} neighbor(s).")
                     else:
-                        print("   ❌ Failed to add node (duplicate code).")
+                        print("   ❌ Failed to add node.")
 
                 # close node
                 elif s_choice == '2':
