@@ -183,8 +183,6 @@ class Algorithms:
             
             # since not yet destination, visit the children nodes
             for child_node, child_cost in self.eateries.dlsu_eateries[current_node]:
-                if child_node in self.eateries.closed_nodes:
-                    continue # restaurant is closed so skip this
                 # update this node and add the children nodes to the comparison list
                 duplicate_current_pathing = list(current_pathing) # duplicate pathing
                 duplicate_current_pathing.append(child_node)
@@ -212,8 +210,6 @@ class Algorithms:
                 path.reverse()
                 return path, g_score[destination], explored
             for neighbor, cost in self.eateries.dlsu_eateries[current]:
-                if neighbor in self.eateries.closed_nodes:
-                    continue
                 tentative_g = g_score[current] + cost
                 if tentative_g < g_score[neighbor]:
                     came_from[neighbor] = current
