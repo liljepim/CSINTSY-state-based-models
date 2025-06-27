@@ -26,6 +26,17 @@ It also supports:
 - No additional libraries required
 
 ### Steps
+
+1. Download ZIP file from GitHub or Clone GitHub Repository
+2. Unzip the Folder
+3. Navigate to the `App` directory and double-click the `main.exe` or in Powershell call the `main.exe` file 
+
 ```bash
 cd App
-python main.py
+.\main.exe
+```
+4. Using Python, you can also run the script by navigating to the `Source` directory and using python to execute the script
+```bash
+cd Source
+python3 main.py
+```
